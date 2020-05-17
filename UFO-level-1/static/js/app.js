@@ -66,7 +66,11 @@ function runEnter() {
     console.log(inputValue);
     
     // Create a filtering function for the date of sighting
-    var filteredData = tableData.filter(sighting => sighting.datetime === inputValue);
+    if (inputValue !== "") {
+        var filteredData = tableData.filter(sighting => sighting.datetime === inputValue);
+    } else {
+        var filteredData = tableData;
+    };
     
     // Log the value to check
     console.log(filteredData);
