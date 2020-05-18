@@ -37,7 +37,7 @@ tableData.forEach(function(sighting) {
 });
 
 
-// Date Filter
+// FILTERS //////////////////////////////////////////////////////////////
 //▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
 
 // Select the button
@@ -94,7 +94,7 @@ function runEnter() {
         console.log(inputValue);
 
         // Filter data
-        var filteredCity = filteredDate.filter(sighting => sighting.city === inputValue);
+        var filteredCity = filteredDate.filter(sighting => sighting.city === inputValue.toLowerCase());
                 
         // Log the filtered data to check
         console.log(filteredCity);
@@ -117,7 +117,7 @@ function runEnter() {
         console.log(inputValue);
 
         // Filter data
-        var filteredState = filteredCity.filter(sighting => sighting.state === inputValue);
+        var filteredState = filteredCity.filter(sighting => sighting.state === inputValue.toLowerCase());
                 
         // Log the filtered data to check
         console.log(filteredState);
@@ -140,7 +140,7 @@ function runEnter() {
         console.log(inputValue);
 
         // Filter data
-        var filteredCountry = filteredState.filter(sighting => sighting.country === inputValue);
+        var filteredCountry = filteredState.filter(sighting => sighting.country === inputValue.toLowerCase());
                 
         // Log the filtered data to check
         console.log(filteredCountry);
@@ -150,30 +150,57 @@ function runEnter() {
     };
 
     // SHAPE //////////////////////////////////////////////////////////
-    // "circle,light,triangle,unknown,fireball,formation,other,sphere,disk,chevron,rectangle,cross,flash,changing,oval,cigar,teardrop,cylinder,"
-    
-    // DURATION //////////////////////////////////////////////////////////
-    
-    // Select the input element and get the raw HTML node
-    var inputElement = d3.select("#duration");
-    
-    // Get the value property of the input element
-    var inputValue = inputElement.property("value");
+    // "circle, light, triangle, unknown, fireball, formation, other, sphere, disk, chevron, rectangle, cross, flash, changing, oval, cigar, teardrop, cylinder"
+
+    // Use D3 to select the dropdown menu
+    var dropdownMenu = d3.selectAll("#selectShape").node();
+
+    // Assign the dropdown menu option to a variable
+    var selectedShape = dropdownMenu.value;
 
     // Create a filtering function for the date of sighting
-    if (inputValue !== "") {
+    if (selectedShape !== "") {
         // Log the value to check
-        console.log(inputValue);
+        console.log(selectedShape);
+
+        // Filter data
+        var filteredShape = filteredCountry.filter(sighting => 
+            sighting.shape === selectedShape.split("|")[0] || 
+            sighting.shape === selectedShape.split("|")[1] ||
+            sighting.shape === selectedShape.split("|")[2] ||
+            sighting.shape === selectedShape.split("|")[3]);
+                
+        // Log the filtered data to check
+        console.log(filteredShape);
+
+    } else {
+        var filteredShape = filteredCountry;
+    };
+
+    // DURATION //////////////////////////////////////////////////////////
+    
+    // Use D3 to select the dropdown menu
+    var dropdownMenu = d3.selectAll("#selectDuration").node();
+
+    // Assign the dropdown menu option to a variable
+    var selectedDuration = dropdownMenu.value;
+
+    // Create a filtering function for the date of sighting
+    if (selectedDuration !== "") {
+        // Log the value to check
+        console.log(selectedDuration);
 
         // Filter data                              // tried adding '=== true' as well and it didn't work
-        var filteredDuration = filteredCountry.filter(sighting => 
-            (typeof(sighting.durationMinutes) == "string" && sighting.durationMinutes.includes(inputValue))); 
+        var filteredDuration = filteredShape.filter(sighting => 
+            (typeof(sighting.durationMinutes) == "string" && sighting.durationMinutes.includes(selectedDuration))); 
         
         // Log the filtered data to check
         console.log(filteredDuration);
+        console.log("--------------------------------");
 
     } else {
-        var filteredDuration = filteredCountry;
+        var filteredDuration = filteredShape;
+        console.log("--------------------------------");
     };
     
     /////////////////////////////////////////////////////////////////

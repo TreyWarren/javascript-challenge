@@ -38,32 +38,48 @@
                       
                       <li class="filter list-group-item">
                         <label for="date">Enter a Date</label>
-                        <input class="form-control" id="datetime" type="text" placeholder="1/11/2010">
+                        <input class="form-control" id="datetime" type="text" placeholder="1/1/2010">
                       </li>
                       
                       <li class="filter list-group-item">
-                        <label for="date">Enter a City</label>
-                        <input class="form-control" id="city" type="text" placeholder="park city">
+                        <label for="city">Enter a City</label>
+                        <input class="form-control" id="city" type="text" placeholder="San Diego">
                       </li>
                       
                       <li class="filter list-group-item">
-                        <label for="date">Enter a State (Postal Code)</label>
-                        <input class="form-control" id="state" type="text" placeholder="ny">
+                        <label for="state">Enter a State (Postal Code)</label>
+                        <input class="form-control" id="state" type="text" placeholder="CA">
                       </li>
                       
                       <li class="filter list-group-item">
-                        <label for="date">Enter a Country</label>
-                        <input class="form-control" id="country" type="text" placeholder="us (unfortunately this is the only country we have data from)">
+                        <label for="country">Enter a Country</label>
+                        <input class="form-control" id="country" type="text" placeholder="US (unfortunately this is the only country we currently have data from)">
                       </li>
                       
                       <li class="filter list-group-item">
-                        <label for="date">Enter a UFO Shape</label>
-                        <input class="form-control" id="shape" type="text" placeholder="circle">
+                        <label for="shape">Choose a UFO Shape</label>
+                        <select id="selectShape">
+                          <option value="">All Shapes</option>
+                          <option value="circle|sphere">Circular</option>
+                          <option value="disk|cylinder">Cylindrical</option>
+                          <option value="triangle">Triangular</option>
+                          <option value="rectangle">Rectangular</option>
+                          <option value="oval|cigar">Ovular</option>
+                          <option value="chevron">Chevron</option>
+                          <option value="teardrop">Teardrop</option>
+                          <option value="light|flash|fireball|formation">Light</option>
+                          <option value="other|changing|cross|unknown">Other</option>
+                        </select>
                       </li>
 
                       <li class="filter list-group-item">
-                        <label for="date">Enter a Sighting Duration</label>
-                        <input class="form-control" id="duration" type="text" placeholder="sec, min, or hour">
+                        <label for="duration">Choose a Sighting Duration</label>
+                        <select id="selectDuration">
+                          <option value="">Any Duration</option>
+                          <option value="sec">Seconds</option>
+                          <option value="min">Minutes</option>
+                          <option value="hour">Hours</option>
+                        </select>
                       </li>
 
                     </ul>
