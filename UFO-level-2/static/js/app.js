@@ -32,184 +32,73 @@ tableData.forEach(function(sighting) {
 
 // Select the button and create the event handler for a click
 var button = d3.select("#filter-btn");
-button.on("click", runEnter);
+button.on("click", filterData);
 
 // Select the form and create the event handler for any keypress (we'll qualify which key in the function)
 var form = d3.select("form");
-form.on("keypress",runEnter);
+form.on("keypress", filterData);
 
 // Ian: Another way to be more specific about what you're selecting is to use each individual 'li' class (i.e. each filter independantly)
 // var li_filter = d3.selectAll(".filter"); 
-// li_filter.on("keypress",runEnter);
+// li_filter.on("keypress",filterData);
 
 
 
 // FILTERS: Date, City, State, Country, UFO Shape, and Duration of Sighting
 //▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔
 
-function runEnter() {
+function filterData() {
     // Specifying that the key pressed must be the Enter key
     if (d3.event.keyCode == 13 || d3.event.button == 0) {
 
         // Prevent the page from refreshing
         d3.event.preventDefault();
         
-        // DATE ////////////////////////////////////////////////////////////////////////////////////
+        // FILTERS //////////////////////////////////////////////////////////////////////////////////
         
-        // Select the input element and get the raw HTML node
-        var inputElement = d3.select("#datetime");
-    
+        // Select the input element or dropdown menu and get the raw HTML node
+        var inputDate = d3.select("#datetime");
+        var inputCity = d3.select("#city");
+        var inputState = d3.select("#state");
+        var inputCountry = d3.select("#country");
+        var dropdownShape = d3.selectAll("#selectShape").node();
+        var dropdownDuration = d3.selectAll("#selectDuration").node();
+
+
         // Get the value property of the input element
-        var inputValue = inputElement.property("value");
+        var dateValue = inputDate.property("value");
+        var cityValue = inputCity.property("value");
+        var stateValue = inputState.property("value");
+        var countryValue = inputCountry.property("value");
+        var selectedShape = dropdownShape.value;
+        var selectedDuration = dropdownDuration.value;
         
-        // Create a filtering function for the date of sighting
-        if (inputValue !== "") {
-            // Log the value to check
-            console.log(inputValue);
-
-            // Filter data
-            var filteredDate = tableData.filter(sighting => 
-                sighting.datetime === inputValue);
-            
-            // Log the filtered data to check
-            console.log(filteredDate);
-
-        } else {
-            var filteredDate = tableData;
-            // No need to log the unfiltered data
-        };
-
-        // CITY ///////////////////////////////////////////////////////////////////////////////////
-        
-        // Select the input element and get the raw HTML node
-        var inputElement = d3.select("#city");
-        
-        // Get the value property of the input element
-        var inputValue = inputElement.property("value");
-
-        // Create a filtering function for the date of sighting
-        if (inputValue !== "") {
-            // Log the value to check
-            console.log(inputValue);
-
-            // Filter data
-            var filteredCity = filteredDate.filter(sighting => 
-                sighting.city === inputValue.toLowerCase());
+        // Apply the conditions for filtering the data and assign it to a variable
+        var filteredData = tableData.filter(function(sighting){
+            return ((sighting.datetime === dateValue || dateValue == "" ) &&
                     
-            // Log the filtered data to check
-            console.log(filteredCity);
-
-        } else {
-            var filteredCity = filteredDate;
-        };
-
-        // STATE //////////////////////////////////////////////////////////////////////////////////
-        
-        // Select the input element and get the raw HTML node
-        var inputElement = d3.select("#state");
-        
-        // Get the value property of the input element
-        var inputValue = inputElement.property("value");
-
-        // Create a filtering function for the date of sighting
-        if (inputValue !== "") {
-            // Log the value to check
-            console.log(inputValue);
-
-            // Filter data
-            var filteredState = filteredCity.filter(sighting => 
-                sighting.state === inputValue.toLowerCase());
+                    // Match the location value to the lower cased location imput
+                    (sighting.city === cityValue.toLowerCase() || cityValue == "") &&
+                    (sighting.state === stateValue.toLowerCase() || stateValue == "") &&
+                    (sighting.country === countryValue.toLowerCase() || countryValue == "") &&
                     
-            // Log the filtered data to check
-            console.log(filteredState);
-
-        } else {
-            var filteredState = filteredCity;
-        };
-
-        // COUNTRY ////////////////////////////////////////////////////////////////////////////////
-        
-        // Select the input element and get the raw HTML node
-        var inputElement = d3.select("#country");
-        
-        // Get the value property of the input element
-        var inputValue = inputElement.property("value");
-
-        // Create a filtering function for the date of sighting
-        if (inputValue !== "") {
-            // Log the value to check
-            console.log(inputValue);
-
-            // Filter data
-            var filteredCountry = filteredState.filter(sighting => 
-                sighting.country === inputValue.toLowerCase());
+                    // I have manually grouped the shapes as follows in the HTML file: 
+                    // rectangle // triangle // chevron // teardrop 
+                    // circle, sphere // disk, cylinder // oval, cigar 
+                    // light, flash, fireball, formation 
+                    // other, unknown, changing, cross
+                    (sighting.shape === selectedShape.split("|")[0] || 
+                     sighting.shape === selectedShape.split("|")[1] ||
+                     sighting.shape === selectedShape.split("|")[2] ||
+                     sighting.shape === selectedShape.split("|")[3] || selectedShape == "") &&
                     
-            // Log the filtered data to check
-            console.log(filteredCountry);
-
-        } else {
-            var filteredCountry = filteredState;
-        };
-
-        // SHAPE ///////////////////////////////////////////////////////////////////////////////////
-        // rectangle // triangle // chevron // teardrop
-        // circle, sphere // disk, cylinder // oval, cigar
-        // light, flash, fireball, formation
-        // other, unknown, changing, cross
-
-        // Use D3 to select the dropdown menu
-        var dropdownMenu = d3.selectAll("#selectShape").node();
-
-        // Assign the dropdown menu option to a variable
-        var selectedShape = dropdownMenu.value;
-
-        // Create a filtering function for the date of sighting
-        if (selectedShape !== "") {
-            // Log the value to check
-            console.log(selectedShape);
-
-            // Filter data
-            var filteredShape = filteredCountry.filter(sighting => 
-                sighting.shape === selectedShape.split("|")[0] || 
-                sighting.shape === selectedShape.split("|")[1] ||
-                sighting.shape === selectedShape.split("|")[2] ||
-                sighting.shape === selectedShape.split("|")[3]);
-                    
-            // Log the filtered data to check
-            console.log(filteredShape);
-
-        } else {
-            var filteredShape = filteredCountry;
-        };
-
-        // DURATION /////////////////////////////////////////////////////////////////////////////////
-        
-        // Use D3 to select the dropdown menu
-        var dropdownMenu = d3.selectAll("#selectDuration").node();
-
-        // Assign the dropdown menu option to a variable
-        var selectedDuration = dropdownMenu.value;
-
-        // Create a filtering function for the date of sighting
-        if (selectedDuration !== "") {
-            // Log the value to check
-            console.log(selectedDuration);
-
-            // Filter data
-            var filteredDuration = filteredShape.filter(sighting => 
-                (typeof(sighting.durationMinutes) == "string" && 
-                sighting.durationMinutes.includes(selectedDuration))); 
-            
-            // Log the filtered data to check
-            console.log(filteredDuration);
-            console.log("--------------------------------");
-
-        } else {
-            var filteredDuration = filteredShape;
-            console.log("--------------------------------");
-        };
-        
-        ///////////////////////////////////////////////////////////////////////////////////////////
+                    // I also decided to group durations into sedonds, minutes, and hour(s)
+                    ((typeof(sighting.durationMinutes) == "string" && sighting.durationMinutes.includes(selectedDuration)) || selectedDuration == "")
+                    // the only time that this doesn't work is the rare cases where it says something like "half an hour" rather than "30 minutes"
+            )
+        });
+        // Check
+        console.log(filteredData);
         
         
         // RELOAD: Load the filtered table
@@ -219,7 +108,7 @@ function runEnter() {
         tbody.html("");
         
         // Input the data
-        filteredDuration.forEach(function(sighting) {
+        filteredData.forEach(function(sighting) {
 
             // Step 1:  Use d3 to append one table row `tr` for each weather report object
             var row = tbody.append("tr");
